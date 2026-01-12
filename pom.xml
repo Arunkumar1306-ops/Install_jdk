@@ -1,1 +1,97 @@
-ghii
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- Change these to suit your project -->
+  <groupId>com.example</groupId>
+  <artifactId>my-app</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>My App</name>
+  <description>A minimal Java application</description>
+
+  <!-- Define Java version and encoding -->
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>   <!-- or 21 -->
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <junit.version>5.10.2</junit.version>
+  </properties>
+
+  <!-- Dependencies -->
+  <dependencies>
+    <!-- JUnit Jupiter API + Engine for tests -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <!-- Build plugins -->
+  <build>
+    <plugins>
+
+      <!-- Compiler plugin: uses source/target from properties -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>${maven.compiler.source}</release>
+        </configuration>
+      </plugin>
+
+      <!-- Surefire plugin: runs JUnit 5 tests on 'mvn test'/'mvn verify' -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.2.5</version>
+        <configuration>
+          <useModulePath>false</useModulePath>
+        </configuration>
+      </plugin>
+
+      <!-- Jar plugin: set Main-Class for runnable JARs -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <mainClass>com.example.Main</mainClass> <!-- change to your main class -->
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <!-- (Optional) Shade plugin: create a fat/uber JAR with dependencies -->
+      <!-- Remove if you don't need a self-contained JAR -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.5.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.example.Main</mainClass>
+                </transformers>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+    </plugins>
+  </build>
+</project>
